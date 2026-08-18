@@ -1,6 +1,5 @@
 from PySide6.QtWidgets import QWidget,QLabel,QHBoxLayout,QVBoxLayout,QApplication,QPushButton,QLineEdit,QLayout
 from PySide6.QtCore import Qt
-import math
 import sys
 
 
@@ -22,10 +21,10 @@ class Calcu(QWidget):
 
         self.visor = QLineEdit()
 
-        self.b1,self.b2,self.b3,self.b4,self.b5,self.b6,self.b7,self.b8,self.b9,self.b0,self.bmais,self.bigual,self.bmult,self.bsub =QPushButton("1"),QPushButton("2"),QPushButton("3"),\
+        self.b1,self.b2,self.b3,self.b4,self.b5,self.b6,self.b7,self.b8,self.b9,self.b0,self.bmais,self.bigual,self.bmult,self.bsub,self.bclear =QPushButton("1"),QPushButton("2"),QPushButton("3"),\
         QPushButton("4"),QPushButton("5"),QPushButton("6"),QPushButton("7"),\
         QPushButton("8"),QPushButton("9"),QPushButton("0"),QPushButton("+"),QPushButton("="),\
-        QPushButton("*"),QPushButton("-")
+        QPushButton("*"),QPushButton("-"),QPushButton("C")
 
         
 
@@ -58,16 +57,17 @@ class Calcu(QWidget):
         fileira1.addWidget(self.b1)
         fileira1.addWidget(self.b2)
         fileira1.addWidget(self.b3)
-        fileira1.addWidget(self.bsub)
+        fileira1.addWidget(self.bclear)
         fileira2.addWidget(self.b4)
         fileira2.addWidget(self.b5)
         fileira2.addWidget(self.b6)
-        fileira2.addWidget(self.bmult)
         fileira3.addWidget(self.b7)
         fileira3.addWidget(self.b8)
         fileira3.addWidget(self.b9)
+        fileira3.addWidget(self.bmult)
         fileira4.addWidget(self.b0)
         fileira4.addWidget(self.bmais)
+        fileira4.addWidget(self.bsub)
         fileira4.addWidget(self.bigual)
 
         self.visor.setReadOnly(True)
@@ -88,6 +88,8 @@ class Calcu(QWidget):
         self.bmult.clicked.connect(lambda:self.colq_num("*"))
         self.bsub.clicked.connect(lambda:self.colq_num("-"))
         self.bigual.clicked.connect(lambda:self.resultado())
+        self.bclear.clicked.connect(lambda:self.limpar())
+
 
     def colq_num(self,numero):
         if self.visor.text() == "0":
@@ -98,21 +100,26 @@ class Calcu(QWidget):
     def resultado(self,):
         cal = self.visor.text()
         for i in cal:
-            if i == "+" :
-                resul = cal.split("+")
-                resul = [int(i) for i in resul]
-                resul_final = str(sum(resul))
+                if i == "+" :
+                    resul = cal.split("+")
+                    resul = [int(i) for i in resul]
+                    resul_final = str(sum(resul))
+                
+                elif i == "-" :
+                    inter = 1
+                    resul = cal.split("-")
+                    resul = [int(i) for i in resul]
+                    resul_final = str(resul[0] - resul [1])
             
-            elif i == "-" :
-                resul = cal.split("-")
-                resul = [int(i) for i in resul]
-                resul_final = str(resul[0] - resul [1])
-        
-            elif i == "*" :
-                resul = cal.split("*")
-                resul = [int(i) for i in resul]
-                resul_final = str(resul[0] * resul[1])
+                elif i == "*" :
+                    resul = cal.split("*")
+                    resul = [int(i) for i in resul]
+                    resul_final = str(resul[0] * resul[1])
         self.visor.setText(resul_final)
+        
+
+    def limpar(self):
+        self.visor.clear()
 
     
        
